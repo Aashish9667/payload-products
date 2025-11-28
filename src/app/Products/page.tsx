@@ -1,28 +1,24 @@
+import payload from "payload";
+
 export default async function ProductsPage() {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000"; 
-    const res = await fetch(`${baseUrl}/api/products`, {
-        next: { revalidate: 5 },
+  try {
+    const data = await payload.find({
+      collection: "products", 
+      limit: 50,              
     });
-if (!res.ok) {
-  throw new Error(`Failed to fetch products: ${res.status}`);
-}
-    const data = await res.json();
 
     return (
-        <div>
-            {data.docs.map((product: any) => (
-                <div key={product.id}>
-                    <h2>{product.title}</h2>
-                    <p>₹{product.price}</p>
-                    <img
-                        src={product.image?.url}
-                        alt={product.title}
-                        width={200}
-                    />
-                </div>
-            ))}
-        </div>
+      <div>
+        {data.docs.map((product: any) => (
+          <div key={product.id} className="border p-4 mb-2">
+            <h2 className="text-lg font-bold">{product.title}</h2>
+            <p>{product.description}</p>
+          </div>
+        ))}
+      </div>
     );
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    return <p className="text-red-500">Failed to load products.</p>;
+  }
 }
