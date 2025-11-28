@@ -2,10 +2,12 @@ export default async function ProductsPage() {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
       ? `https://${process.env.VERCEL_URL}`
       : "http://localhost:3000"; 
-    const res = await fetch(`${baseUrl}/api/Products`, {
+    const res = await fetch(`${baseUrl}/api/products`, {
         next: { revalidate: 5 },
     });
-
+if (!res.ok) {
+  throw new Error(`Failed to fetch products: ${res.status}`);
+}
     const data = await res.json();
 
     return (
