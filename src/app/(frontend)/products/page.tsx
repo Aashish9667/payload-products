@@ -1,8 +1,8 @@
 export default async function ProductsPage() {
-  const baseURL = process.env.PAYLOAD_PUBLIC_SERVER_URL || "http://localhost:3000";
 
 
-  const res = await fetch(`${baseURL}/api/products`, {
+
+  const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10", {
     cache: "no-store",
   });
   if (!res.ok) {
