@@ -1,10 +1,9 @@
 export default async function ProductsPage() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+  const baseURL = process.env.PAYLOAD_PUBLIC_SERVER_URL || "http://localhost:3000";
 
-  const res = await fetch(`${baseUrl}/api/products`, {
-    next: { revalidate: 5 },
+
+  const res = await fetch(`${baseURL}/api/products`, {
+    cache: "no-store",
   });
   if (!res.ok) {
     throw new Error(`Failed to fetch products: ${res.status}`);
